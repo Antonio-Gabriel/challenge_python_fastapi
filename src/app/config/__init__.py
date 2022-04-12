@@ -1,0 +1,1 @@
+from .db import metadata_object
