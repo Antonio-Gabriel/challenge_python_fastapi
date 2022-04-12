@@ -1,0 +1,5 @@
+run-db:
+	docker-compose up
+
+models:
+	python3 src/app/sql/models.py
