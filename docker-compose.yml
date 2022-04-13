@@ -7,7 +7,7 @@ services:
     environment:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=postgresdb2022
-      - POSTGRES_DB=courseDb
+      - POSTGRES_DB=wedevLearning
     ports:
       - "5432:5432"
     restart: always
