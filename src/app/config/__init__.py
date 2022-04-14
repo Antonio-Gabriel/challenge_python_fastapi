@@ -1,1 +1,1 @@
-from .db import metadata_object
+from .SessionMaker import session_maker
