@@ -1,5 +1,8 @@
 run-database:
 	docker run -d -it --name pg_database -e POSTGRES_PASSWORD=postgresdb2022 -e POSTGRES_DB=wedevLearning -p 5432:5432 postgres:latest
 
+run-database-ubuntu:
+	sudo docker run -d -it --name pg_database -e POSTGRES_PASSWORD=postgresdb2022 -e POSTGRES_DB=wedevLearning -p 5432:5432 postgres:latest
+
 run-migrations: 
 	alembic upgrade heads
