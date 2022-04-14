@@ -7,7 +7,7 @@ class UserProps:
     name: str
     email: str
     surname: str
-    state: bool
     city: str
     password: str
     user_type: Users
+    state: bool = None
