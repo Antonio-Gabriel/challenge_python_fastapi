@@ -12,13 +12,16 @@ class UserModel(Base):
     __tablename__ = "tusers"
 
     id = Column(String(40), primary_key=True)
-    password = Column(String(60), nullable=False)
+    password = Column(String(120), nullable=False)
     name = Column(String(60), nullable=False)
     surname = Column(String(60), nullable=False)
     email = Column(String(60), nullable=False)
     state = Column(Boolean, default=True)
     city = Column(String(45), nullable=False)
     user_type = Column(ENUM(Users), nullable=False)
+
+    def __repr__(self) -> str:
+        return f"UserModel(id={self.id}, name={self.name}, surname={self.surname}, email={self.email}, password={self.password}, city={self.city}, state={self.state}, user_type={self.user_type})"
 
 
 class TeacherModel(Base):
