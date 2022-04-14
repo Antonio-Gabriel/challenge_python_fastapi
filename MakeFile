@@ -6,3 +6,6 @@ run-database-ubuntu:
 
 run-migrations: 
 	alembic upgrade heads
+
+run-server:
+	python3 main.py
