@@ -11,7 +11,7 @@ from .validators import Email, PasswordHash
 
 @dataclass
 class UserPropsResult(UserProps):
-    id: str
+    id: str = None
 
 
 class User:
