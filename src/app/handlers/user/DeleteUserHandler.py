@@ -11,6 +11,11 @@ class DeleteUserHandler:
 
     def handle(self, user_id: str) -> Result[str]:
 
+        filtered = self.__user_repository.get_by_id(user_id)
+
+        if not filtered:
+            return Result.fail("User not found")
+
         statement = self.__user_repository.delete(user_id)
 
         if statement:
