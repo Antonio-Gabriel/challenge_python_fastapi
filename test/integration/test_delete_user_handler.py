@@ -10,7 +10,7 @@ class TestUserHandler(TestCase):
 
         delete_handle = DeleteUserHandler(UserRepository)
 
-        result = delete_handle.handle(user_id="871f96e8-6a12-4383-822e-791794f4798d")
-        print(result)
+        result = delete_handle.handle(user_id="b217b21a-7bb2-4b9d-a724-b07585259822")
+        print(result.get_value())
 
         self.assertEqual(result.error_value(), None)
