@@ -17,7 +17,7 @@ class UserRepository(IUserRepository):
             password=entity.password,
             city=entity.city,
             user_type=entity.user_type,
-            state=True,
+            state=entity.state,
         )
 
         with session_maker() as session:
