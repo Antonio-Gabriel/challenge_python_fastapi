@@ -14,7 +14,7 @@ class UserRepository(IUserRepository):
             name=entity.name,
             surname=entity.surname,
             email=entity.email,
-            password=entity.password,
+            password=entity.password.decode(),
             city=entity.city,
             user_type=entity.user_type,
             state=entity.state,
@@ -84,7 +84,6 @@ class UserRepository(IUserRepository):
         """get entity email"""
         with session_maker() as session:
             user = session.query(UserModel).filter(UserModel.email == email).first()
-            session.commit()
 
         return user
 
