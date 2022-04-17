@@ -4,7 +4,7 @@ from pydantic import BaseModel
 
 
 class UserModels(BaseModel):
-    id: str
+    id: int
     name: str
     email: str
     surname: str
