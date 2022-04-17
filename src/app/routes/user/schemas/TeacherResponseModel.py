@@ -4,16 +4,16 @@ from pydantic import BaseModel
 
 
 class ContactsModel(BaseModel):
-    id: str
+    id: int
     phone: str
-    user_id: str
+    user_id: int
 
     class Config:
         orm_mode = True
 
 
 class TeacherModel(BaseModel):
-    id: str
+    id: int
     name: str
     email: str
     surname: str
