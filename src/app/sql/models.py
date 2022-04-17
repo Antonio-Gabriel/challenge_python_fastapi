@@ -70,3 +70,6 @@ class ContactModel(Base):
     id = Column(String(40), nullable=False, primary_key=True)
     phone = Column(String(40), nullable=False, primary_key=True)
     user_id = Column(String(40), ForeignKey("tusers.id"))
+
+    def __repr__(self) -> str:
+        return f"ContactModel(id={self.id}, name={self.phone}"
