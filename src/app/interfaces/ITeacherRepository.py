@@ -22,3 +22,15 @@ class ITeacherRepository(ABC):
         """Get all teachers"""
 
         raise NotImplementedError("Method not implemented")
+
+    @abstractmethod
+    def get_by_id(entity_id: str):
+        """get entity by id"""
+
+        raise NotImplementedError("Method not implemented")
+
+    @abstractmethod
+    def delete(entity_id: str):
+        """delete entity into db"""
+
+        raise NotImplementedError("Method not implemented")
