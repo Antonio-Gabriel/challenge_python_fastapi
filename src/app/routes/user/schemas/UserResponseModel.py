@@ -41,3 +41,11 @@ class UserByIdResponseModel(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class GenericBaseModelProps(BaseModel):
+    msg: str
+
+
+class GenericUserModel(BaseModel):
+    detail: GenericBaseModelProps
