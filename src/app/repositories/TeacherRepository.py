@@ -13,7 +13,6 @@ class TeacherRepository(ITeacherRepository):
         """save entity into db"""
 
         teacher = TeacherModel(
-            id=entity.id,
             user_id=entity.user_id,
         )
 
@@ -27,9 +26,7 @@ class TeacherRepository(ITeacherRepository):
         """save contacts into db"""
         contact_model = []
         for contact in entity[0]:
-            contact_model.append(
-                ContactModel(id=uuid4(), phone=contact, user_id=entity[1])
-            )
+            contact_model.append(ContactModel(phone=contact, user_id=entity[1]))
 
         for teacher_contact in contact_model:
             with session_maker() as session:
@@ -42,38 +39,66 @@ class TeacherRepository(ITeacherRepository):
         """Get all teachers"""
         with session_maker() as session:
             teachers = (
-                session.query(UserModel)
-                .join(TeacherModel)
-                .join(ContactModel)
+                session.query(TeacherModel)
+                .filter(UserModel.user_type == "teacher")
                 .values(
-                    TeacherModel.id,
+                    UserModel.id,
                     UserModel.name,
                     UserModel.surname,
                     UserModel.email,
                     UserModel.city,
-                    ContactModel.user_id,
                     UserModel.user_type,
                 )
             )
 
+            result_set = set()
             resultList = []
-            for id, name, surname, email, city, user_id, user_type in teachers:
-                teacher_contacts = (
-                    session.query(ContactModel)
-                    .filter(ContactModel.user_id == user_id)
-                    .all()
-                )
+            for teacher in teachers:
 
-                resultList.append(
-                    {
-                        "id": id,
-                        "name": name,
-                        "surname": surname,
-                        "email": email,
-                        "city": city,
-                        "phone": teacher_contacts,
-                        "user_type": user_type,
-                    }
-                )
+                if teacher.name not in result_set:
+
+                    teacher_contacts = (
+                        session.query(ContactModel)
+                        .filter(ContactModel.user_id == UserModel.id)
+                        .all()
+                    )
+
+                    resultList.append(
+                        {
+                            "id": teacher.id,
+                            "name": teacher.name,
+                            "surname": teacher.surname,
+                            "email": teacher.email,
+                            "city": teacher.city,
+                            "phone": teacher_contacts,
+                            "user_type": teacher.user_type,
+                        }
+                    )
+
+                    result_set.add(teacher.name)
 
         return resultList
+
+    def get_by_id(entity_id: str):
+        """get entity by id"""
+        with session_maker() as session:
+            user = (
+                session.query(UserModel)
+                .filter(UserModel.id == entity_id, UserModel.user_type == "teacher")
+                .first()
+            )
+
+        return user
+
+    def delete(entity_id: str):
+        """delete entity into db"""
+        with session_maker() as session:
+            teacher = (
+                session.query(ContactModel)
+                .filter(ContactModel.user_id == entity_id)
+                .delete()
+            )
+
+            session.commit()
+
+        return teacher
