@@ -9,3 +9,4 @@ from .user.GetUserByStateHandler import GetUserByStateHandler
 
 from .teacher.CreateTeacherHandler import CreateTeacherHandler
 from .teacher.GetAllTeachersHandler import GetAllTeachersHandler
+from .teacher.DeleteTeacherHandler import DeleteTeacherHandler
