@@ -18,9 +18,7 @@ class CreateTeacherHandler:
         self.__user_repository = user_repository
         self.__teacher_repository = teacher_repository
 
-    def handle(
-        self, requestDTO: UserProps, secondeRequestDTO: TeacherProps, contacts: list
-    ) -> Result[UserProps]:
+    def handle(self, requestDTO: UserProps, contacts: list) -> Result[UserProps]:
 
         user_handler = CreateUserHandler(self.__user_repository)
         user_base = user_handler.handle(requestDTO)
@@ -35,9 +33,11 @@ class CreateTeacherHandler:
         if verifycontacts:
             return Result.fail("Do you have duplicated contacts!")
 
-        statement = self.__teacher_repository.save(secondeRequestDTO)
+        statement = self.__teacher_repository.save(
+            TeacherProps(user_id=user_base.get_value())
+        )
 
-        self.__teacher_repository.register_contacts(contacts, secondeRequestDTO.user_id)
+        self.__teacher_repository.register_contacts(contacts, user_base.get_value())
 
         if statement:
             return Result.ok(UserProps)
