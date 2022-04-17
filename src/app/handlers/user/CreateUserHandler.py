@@ -21,4 +21,4 @@ class CreateUserHandler:
         statement = self.__user_repository.save(requestDTO)
 
         if statement:
-            return Result.ok(UserProps)
+            return Result.ok(statement)
