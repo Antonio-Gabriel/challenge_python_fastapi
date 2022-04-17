@@ -9,7 +9,7 @@ from src.shared.src.domain import Entity
 
 @dataclass
 class TeacherPropsResult(TeacherProps):
-    id: str
+    id: str = None
 
 
 class Teacher:
