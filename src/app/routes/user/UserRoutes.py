@@ -1,7 +1,7 @@
 from fastapi import APIRouter, status, Depends
 
+from ...adapter import UserAdapter
 from ...config import AuthMiddleware
-from ...adapter import UserAdapter, TeacherAdapter
 from ...decorators.Authorization import Authorization
 from ...repositories import UserRepository, TeacherRepository
 
@@ -30,6 +30,7 @@ from ...handlers import (
     GetUserByStateHandler,
     CreateTeacherHandler,
     GetAllTeachersHandler,
+    DeleteTeacherHandler,
 )
 
 user_routes = APIRouter(
@@ -274,6 +275,17 @@ async def delete(id: str, auth=Depends(AuthMiddleware.auth_wrapper)):
 
 
 # Section for teacher create
+
+
+@user_routes.get("/teachers", response_model=TeacherResponseModel)
+@Authorization("staff")
+async def get_teachers(auth=Depends(AuthMiddleware.auth_wrapper)):
+
+    teacher_handle = GetAllTeachersHandler(TeacherRepository)
+    teachers = teacher_handle.handle()
+    return {"teachers": teachers.get_value()}
+
+
 @user_routes.post(
     "/teacher/create",
     response_model=GenericUserModel,
@@ -306,12 +318,8 @@ async def create_teacher(
             ),
         )
 
-    teacher_result = TeacherAdapter.create(user_id=user_result.get_value().id)
-
     teacher_handler = CreateTeacherHandler(UserRepository, TeacherRepository)
-    result = teacher_handler.handle(
-        user_result.get_value(), teacher_result.get_value(), user_props.contacts
-    )
+    result = teacher_handler.handle(user_result.get_value(), user_props.contacts)
 
     error = result.error_value()
 
@@ -333,12 +341,3 @@ async def create_teacher(
             }
         ),
     )
-
-
-@user_routes.get("/teachers", response_model=TeacherResponseModel)
-@Authorization("staff")
-async def get_teachers(auth=Depends(AuthMiddleware.auth_wrapper)):
-
-    teacher_handle = GetAllTeachersHandler(TeacherRepository)
-    teachers = teacher_handle.handle()
-    return {"teachers": teachers.get_value()}
