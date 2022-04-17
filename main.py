@@ -4,6 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from src.app.routes.user.UserRoutes import user_routes
+from src.app.routes.teacher.TeacherRoutes import teacher_routes
 
 app = FastAPI(redoc_url=False)
 
@@ -26,6 +27,7 @@ def say_hello():
 
 
 app.include_router(user_routes)
+app.include_router(teacher_routes)
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
