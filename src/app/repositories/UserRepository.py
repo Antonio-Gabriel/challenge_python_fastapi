@@ -10,7 +10,6 @@ class UserRepository(IUserRepository):
         """save entity into db"""
 
         user = UserModel(
-            id=entity.id,
             name=entity.name,
             surname=entity.surname,
             email=entity.email,
@@ -22,9 +21,13 @@ class UserRepository(IUserRepository):
 
         with session_maker() as session:
             session.add(user)
+            session.flush()
+
+            lastrowId = user.id
+
             session.commit()
 
-        return user
+        return lastrowId
 
     def update(entity: UserProps):
         """update entity into db"""
@@ -49,14 +52,18 @@ class UserRepository(IUserRepository):
     def get():
         """get all entities"""
         with session_maker() as session:
-            user = session.query(UserModel).all()
+            user = session.query(UserModel).filter(UserModel.user_type == "staff").all()
 
         return user
 
     def get_by_id(entity_id: str):
         """get entity by id"""
         with session_maker() as session:
-            user = session.query(UserModel).filter(UserModel.id == entity_id).first()
+            user = (
+                session.query(UserModel)
+                .filter(UserModel.id == entity_id, UserModel.user_type == "staff")
+                .first()
+            )
 
         return user
 
@@ -91,6 +98,7 @@ class UserRepository(IUserRepository):
         """delete entity into db"""
         with session_maker() as session:
             user = session.query(UserModel).filter(UserModel.id == entity_id).delete()
+
             session.commit()
 
         return user
