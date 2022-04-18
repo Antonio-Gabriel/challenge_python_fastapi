@@ -3,7 +3,14 @@ from ..interfaces import IStudentRepository
 from ..entities.props import StudentProps, ContactProps
 
 from ..config import session_maker
-from ..sql import StudentModel, ContactModel, UserModel
+from ..sql import (
+    StudentModel,
+    EnrollmentModel,
+    CourseModel,
+    TeacherModel,
+    ContactModel,
+    UserModel,
+)
 
 
 class StudentRepository(IStudentRepository):
@@ -74,6 +81,68 @@ class StudentRepository(IStudentRepository):
                     )
 
                     result_set.add(student.name)
+
+        return resultList
+
+    def get_student_courses(entity_id: str):
+        """get stunde courses"""
+        with session_maker() as session:
+            courses = (
+                session.query(CourseModel)
+                .filter(EnrollmentModel.student_id == entity_id)
+                .values(
+                    CourseModel.id,
+                    CourseModel.name,
+                    CourseModel.startDate,
+                    CourseModel.endDate,
+                    CourseModel.state,
+                    CourseModel.teacher_id,
+                )
+            )
+
+            result_set = set()
+            resultList = []
+            for course in courses:
+                if course.name not in result_set:
+                    teacher = (
+                        session.query(TeacherModel)
+                        .filter(
+                            TeacherModel.id == course.teacher_id,
+                            UserModel.id == TeacherModel.user_id,
+                        )
+                        .values(
+                            TeacherModel.id,
+                            UserModel.name,
+                            UserModel.email,
+                        )
+                    )
+
+                    teacher_list = []
+                    for current_teacher in teacher:
+                        teacher_list.append(
+                            {
+                                "id": current_teacher.id,
+                                "name": current_teacher.name,
+                                "email": current_teacher.email,
+                            }
+                        )
+
+                    resultList.append(
+                        {
+                            "id": course.id,
+                            "name": course.name,
+                            "startDate": course.startDate,
+                            "endDate": course.endDate,
+                            "state": course.state,
+                            "teacher": {
+                                "id": teacher_list[0]["id"],
+                                "name": teacher_list[0]["name"],
+                                "email": teacher_list[0]["email"],
+                            },
+                        }
+                    )
+
+                    result_set.add(course.name)
 
         return resultList
 
