@@ -12,6 +12,8 @@ from fastapi.encoders import jsonable_encoder
 from .schemas.StudentSchema import StudentSchema
 from .schemas.StudentResponseModel import StudentResponseModel
 
+from ..course.schemas.CourseResponseModel import CourseResponseModel
+
 from ..user.schemas.AuthSchema import AuthSchema, AuthResponseModel
 from ..user.schemas.UserResponseModel import GenericUserModel, UserCreateModels
 
@@ -20,6 +22,7 @@ from ...handlers import (
     CreateStudentHandler,
     UpdateUserHandler,
     GetAllStudentsHandler,
+    GelStudentCoursesHandler,
 )
 
 
@@ -65,6 +68,15 @@ async def get_teachers(auth=Depends(AuthMiddleware.auth_wrapper)):
     students_handler = GetAllStudentsHandler(StudentRepository)
     students = students_handler.handle()
     return {"students": students.get_value()}
+
+
+@student_routes.get("/student/courses/{id}", response_model=CourseResponseModel)
+@Authorization("student")
+async def get_teachers(id: int, auth=Depends(AuthMiddleware.auth_wrapper)):
+
+    courses_handler = GelStudentCoursesHandler(StudentRepository)
+    coueses = courses_handler.handle(id)
+    return {"courses": coueses.get_value()}
 
 
 @student_routes.post(
