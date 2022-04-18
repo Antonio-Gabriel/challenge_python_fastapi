@@ -40,7 +40,7 @@ class StudentRepository(IStudentRepository):
                 session.query(StudentModel)
                 .filter(UserModel.user_type == "student")
                 .values(
-                    UserModel.id,
+                    StudentModel.id,
                     UserModel.name,
                     UserModel.surname,
                     UserModel.email,
