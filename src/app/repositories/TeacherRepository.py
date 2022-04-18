@@ -40,7 +40,7 @@ class TeacherRepository(ITeacherRepository):
                 session.query(TeacherModel)
                 .filter(UserModel.user_type == "teacher")
                 .values(
-                    UserModel.id,
+                    TeacherModel.id,
                     UserModel.name,
                     UserModel.surname,
                     UserModel.email,
