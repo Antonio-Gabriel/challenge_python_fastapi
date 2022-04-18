@@ -19,6 +19,7 @@ from ...handlers import (
     AuthUserHandler,
     CreateTeacherHandler,
     GetAllTeachersHandler,
+    GetAllCoursesOfTeacherHandler,
     DeleteTeacherHandler,
 )
 
@@ -64,7 +65,23 @@ async def get_teachers(auth=Depends(AuthMiddleware.auth_wrapper)):
 
     teacher_handle = GetAllTeachersHandler(TeacherRepository)
     teachers = teacher_handle.handle()
+
     return {"teachers": teachers.get_value()}
+
+
+@teacher_routes.get("/teacher/courses/{id}", response_model=TeacherResponseModel)
+@Authorization("teacher")
+async def get_all_courses_of_teacher(
+    id: int, auth=Depends(AuthMiddleware.auth_wrapper)
+):
+
+    teacher_handle = GetAllCoursesOfTeacherHandler(TeacherRepository)
+    teachers = teacher_handle.handle(id)
+
+    return {
+        "teachers": teachers.get_value()["courses"],
+        "total_students": teachers.get_value()["total_students"],
+    }
 
 
 @teacher_routes.post(
