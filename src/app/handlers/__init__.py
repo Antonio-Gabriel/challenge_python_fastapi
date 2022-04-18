@@ -14,3 +14,5 @@ from .teacher.DeleteTeacherHandler import DeleteTeacherHandler
 from .course.CreateCourseHandler import CreateCourseHandler
 from .course.GetAllCoursesHandler import GetAllCoursesHandler
 from .course.GetCoursesByTeacher import GetCoursesByTeacher
+
+from .student.CreateStudentHandler import CreateStudentHandler
