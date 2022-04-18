@@ -10,7 +10,10 @@ from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 
 from .schemas.TeacherSchema import TeacherSchema
-from .schemas.TeacherResponseModel import TeacherResponseModel
+from .schemas.TeacherResponseModel import (
+    TeacherResponseModel,
+    TeacherRelationResponseModel,
+)
 
 from ..user.schemas.UserResponseModel import GenericUserModel
 from ..user.schemas.AuthSchema import AuthSchema, AuthResponseModel
@@ -69,7 +72,9 @@ async def get_teachers(auth=Depends(AuthMiddleware.auth_wrapper)):
     return {"teachers": teachers.get_value()}
 
 
-@teacher_routes.get("/teacher/courses/{id}", response_model=TeacherResponseModel)
+@teacher_routes.get(
+    "/teacher/courses/{id}", response_model=TeacherRelationResponseModel
+)
 @Authorization("teacher")
 async def get_all_courses_of_teacher(
     id: int, auth=Depends(AuthMiddleware.auth_wrapper)
