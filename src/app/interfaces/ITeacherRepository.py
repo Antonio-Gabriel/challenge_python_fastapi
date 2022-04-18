@@ -24,6 +24,12 @@ class ITeacherRepository(ABC):
         raise NotImplementedError("Method not implemented")
 
     @abstractmethod
+    def get_teacher_courses(entity_id: int):
+        """Get all courses of teacher"""
+
+        raise NotImplementedError("Method not implemented")
+
+    @abstractmethod
     def get_by_id(entity_id: str):
         """get entity by id"""
 
