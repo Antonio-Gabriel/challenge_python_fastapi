@@ -1,3 +1,4 @@
+from datetime import datetime
 from enum import Enum
 from typing import List
 from pydantic import BaseModel
@@ -25,5 +26,21 @@ class TeacherModel(BaseModel):
         orm_mode = True
 
 
+class TeacherRelationModel(BaseModel):
+    id: int
+    name: str
+    startDate: datetime
+    endDate: datetime
+    state: bool
+
+    class Config:
+        orm_mode = True
+
+
 class TeacherResponseModel(BaseModel):
     teachers: List[TeacherModel]
+
+
+class TeacherRelationResponseModel(BaseModel):
+    courses: List[TeacherRelationModel]
+    total_students: int
