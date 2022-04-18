@@ -1,5 +1,3 @@
-import email
-from uuid import uuid4
 from typing import List
 from ..interfaces import ITeacherRepository
 from ..entities.props import TeacherProps, ContactProps
