@@ -84,7 +84,7 @@ async def get_all_courses_of_teacher(
     teachers = teacher_handle.handle(id)
 
     return {
-        "teachers": teachers.get_value()["courses"],
+        "courses": teachers.get_value()["courses"],
         "total_students": teachers.get_value()["total_students"],
     }
 
