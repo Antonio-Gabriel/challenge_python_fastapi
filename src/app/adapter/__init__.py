@@ -1,3 +1,4 @@
 from .UserAdapter import UserAdapter
-from .TeacherAdapter import TeacherAdapter
 from .CourseAdapter import CourseAdapter
+from .TeacherAdapter import TeacherAdapter
+from .EnrollmentAdapter import EnrollmentAdapter
