@@ -15,7 +15,12 @@ from .schemas.StudentResponseModel import StudentResponseModel
 from ..user.schemas.AuthSchema import AuthSchema, AuthResponseModel
 from ..user.schemas.UserResponseModel import GenericUserModel, UserCreateModels
 
-from ...handlers import AuthUserHandler, CreateStudentHandler, UpdateUserHandler
+from ...handlers import (
+    AuthUserHandler,
+    CreateStudentHandler,
+    UpdateUserHandler,
+    GetAllStudentsHandler,
+)
 
 
 student_routes = APIRouter(
@@ -51,6 +56,15 @@ async def auth(credentials: AuthSchema):
         "token_type": "Bearer",
         "user": response.get_value(),
     }
+
+
+@student_routes.get("/students", response_model=StudentResponseModel)
+@Authorization("staff")
+async def get_teachers(auth=Depends(AuthMiddleware.auth_wrapper)):
+
+    students_handler = GetAllStudentsHandler(StudentRepository)
+    students = students_handler.handle()
+    return {"students": students.get_value()}
 
 
 @student_routes.post(
