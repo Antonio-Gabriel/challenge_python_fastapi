@@ -3,7 +3,13 @@ from ..interfaces import ITeacherRepository
 from ..entities.props import TeacherProps, ContactProps
 
 from ..config import session_maker
-from ..sql import TeacherModel, ContactModel, UserModel
+from ..sql import (
+    TeacherModel,
+    CourseModel,
+    EnrollmentModel,
+    ContactModel,
+    UserModel,
+)
 
 
 class TeacherRepository(ITeacherRepository):
@@ -76,6 +82,56 @@ class TeacherRepository(ITeacherRepository):
                     result_set.add(teacher.name)
 
         return resultList
+
+    def get_teacher_courses(entity_id: int):
+        """Get all courses of teacher"""
+        with session_maker() as session:
+            courses = (
+                session.query(CourseModel)
+                .filter(TeacherModel.id == entity_id)
+                .values(
+                    CourseModel.id,
+                    CourseModel.name,
+                    CourseModel.startDate,
+                    CourseModel.endDate,
+                    CourseModel.state,
+                    CourseModel.teacher_id,
+                )
+            )
+
+            result_set = set()
+            resultList = []
+
+            student_result_set = set()
+            totalStudent = []
+            for course in courses:
+                if course.name not in result_set:
+
+                    students = (
+                        session.query(ContactModel)
+                        .filter(EnrollmentModel.course_id == course.id)
+                        .all()
+                    )
+
+                    for student in students:
+                        if student.id not in student_result_set:
+                            totalStudent.append({"id": student.id})
+
+                            student_result_set.add(student.id)
+
+                    resultList.append(
+                        {
+                            "id": course.id,
+                            "name": course.name,
+                            "startDate": course.startDate,
+                            "endDate": course.endDate,
+                            "state": course.state,
+                        }
+                    )
+
+                    result_set.add(course.name)
+
+        return {"courses": resultList, "total_students": len(totalStudent)}
 
     def get_by_id(entity_id: str):
         """get entity by id"""
