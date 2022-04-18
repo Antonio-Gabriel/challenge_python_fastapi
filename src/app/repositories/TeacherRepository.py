@@ -108,7 +108,7 @@ class TeacherRepository(ITeacherRepository):
                 if course.name not in result_set:
 
                     students = (
-                        session.query(ContactModel)
+                        session.query(EnrollmentModel)
                         .filter(EnrollmentModel.course_id == course.id)
                         .all()
                     )
