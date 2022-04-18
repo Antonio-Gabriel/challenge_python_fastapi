@@ -10,3 +10,7 @@ from .user.GetUserByStateHandler import GetUserByStateHandler
 from .teacher.CreateTeacherHandler import CreateTeacherHandler
 from .teacher.GetAllTeachersHandler import GetAllTeachersHandler
 from .teacher.DeleteTeacherHandler import DeleteTeacherHandler
+
+from .course.CreateCourseHandler import CreateCourseHandler
+from .course.GetAllCoursesHandler import GetAllCoursesHandler
+from .course.GetCoursesByTeacher import GetCoursesByTeacher
