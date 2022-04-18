@@ -17,5 +17,6 @@ from .course.GetAllCoursesHandler import GetAllCoursesHandler
 
 from .student.CreateStudentHandler import CreateStudentHandler
 from .student.GetAllStudentsHandler import GetAllStudentsHandler
+from .student.GelStudentCoursesHandler import GelStudentCoursesHandler
 
 from .enrollment.RegisterStudentHandler import RegisterStudentHandler
